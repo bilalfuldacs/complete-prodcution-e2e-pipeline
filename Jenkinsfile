@@ -1,8 +1,6 @@
 pipeline {
     agent any
 
-    
-
     tools {
         jdk 'Java17'
         maven 'Maven3'
@@ -22,19 +20,34 @@ pipeline {
                     url: 'https://github.com/bilalfuldacs/complete-prodcution-e2e-pipeline'
             }
         }
-         stage('Build') {
+
+        stage('Build') {
             steps {
-               sh "mvn clean package"
+                script {
+                    try {
+                        sh "mvn clean package"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Build failed: ${e.message}"
+                    }
+                }
             }
         }
-         stage('test') {
+
+        stage('Test') {
             steps {
-                sh "mvn test"
+                script {
+                    try {
+                        sh "mvn test"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Tests failed: ${e.message}"
+                    }
+                }
             }
         }
 
         // Add more stages as needed
     }
 
-
-}
+   }
