@@ -22,6 +22,16 @@ pipeline {
                     url: 'https://github.com/bilalfuldacs/complete-prodcution-e2e-pipeline'
             }
         }
+         stage('Build') {
+            steps {
+               sh "mvn clean package"
+            }
+        }
+         stage('test') {
+            steps {
+                sh "mvn test"
+            }
+        }
 
         // Add more stages as needed
     }
