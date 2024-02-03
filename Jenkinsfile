@@ -1,8 +1,8 @@
 pipeline {
-    environment {
-        // Define environment variables if needed
-    }
+    agent any
+
     
+
     tools {
         jdk 'Java17'
         maven 'Maven3'
@@ -26,7 +26,5 @@ pipeline {
         // Add more stages as needed
     }
 
-    post {
-        // Define post-build actions if needed
-    }
+
 }
