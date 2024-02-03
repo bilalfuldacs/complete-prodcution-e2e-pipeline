@@ -1,11 +1,13 @@
 pipeline {
-    agent {
-        label "jenkins-agent"
+    environment {
+        // Define environment variables if needed
     }
+    
     tools {
         jdk 'Java17'
         maven 'Maven3'
     }
+
     stages {
         stage('Cleanup Workspace') {
             steps {
@@ -20,5 +22,11 @@ pipeline {
                     url: 'https://github.com/bilalfuldacs/complete-prodcution-e2e-pipeline'
             }
         }
+
+        // Add more stages as needed
+    }
+
+    post {
+        // Define post-build actions if needed
     }
 }
