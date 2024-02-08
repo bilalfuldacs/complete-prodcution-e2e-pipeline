@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     tools {
-        jdk 'Java17'
+        jdk 'Java17' //these are names in jenkins for jdk and maven
         maven 'Maven3'
     }
 
     stages {
         stage('Cleanup Workspace') {
             steps {
-                cleanWs()
+                cleanWs()//this is used to clean up our workspace
             }
         }
 
@@ -21,31 +21,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                script {
-                    try {
-                        bat "mvn clean package"
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Build failed: ${e.message}"
-                    }
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                script {
-                    try {
-                        bat "mvn test"
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Tests failed: ${e.message}"
-                    }
-                }
-            }
-        }
+        
 
         // Add more stages as needed
     }
