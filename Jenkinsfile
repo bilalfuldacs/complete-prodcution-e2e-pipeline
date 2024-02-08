@@ -41,6 +41,14 @@ pipeline {
         
             }
         }
+        stage('squality gate') {
+            steps {
+                script{
+                 waitforQualityGate abortPipeline: false, credentialsId: 'sonar'
+                }
+        
+            }
+        }
 
         // Add more stages as needed
     }
