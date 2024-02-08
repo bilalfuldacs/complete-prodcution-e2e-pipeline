@@ -33,10 +33,12 @@ pipeline {
         
          stage('sonarqube analysis') {
             steps {
+                script{
                 withSonarQubeEnv(credentialsId: 'sonar' ) {
                     sh 'mvn sonar:sonar'//this is used to clean up our workspace
                 }
-                sh 'mvn sonar:sonar'//this is used to clean up our workspace
+                }
+        
             }
         }
 
