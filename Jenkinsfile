@@ -9,7 +9,7 @@ pipeline {
         APP_NAME = "complete-prodcution-e2e-pipeline"
         RELEASE = "1.0.0"
         DOCKER_USER = "bilal4178"
-        DOCKER_PASS = 'dckr_pat_zRNS2NOLKcqKWsV3_dx2I8pYBI4'
+        DOCKER_PASS = 'dckr_pat_kEutmz8Pk8R3SEwzJZMM45LN9-U'
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
         //JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
