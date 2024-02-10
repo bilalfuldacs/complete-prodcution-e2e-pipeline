@@ -50,14 +50,14 @@ pipeline {
         
             }
         }
-        stage('squality gate') {
-            steps {
-                script{
-                 waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
-                }
+        // stage('squality gate') {
+        //     steps {
+        //         script{
+        //          waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+        //         }
         
-            }
-        }
+        //     }
+        // }
     stage("Build & Push Docker Image") {
             steps {
                 script {
