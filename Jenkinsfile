@@ -12,7 +12,7 @@ pipeline {
         DOCKER_PASS = 'dckr_pat_zRNS2NOLKcqKWsV3_dx2I8pYBI4'
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-        JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
+        //JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
 
     }
     stages {
