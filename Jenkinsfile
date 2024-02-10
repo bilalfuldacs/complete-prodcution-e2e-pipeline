@@ -53,20 +53,20 @@ pipeline {
         }
         
         stage("Build & Push Docker Image") {
-            steps {
-                script {
-                    withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKER_PASS')]) {
-                        docker.withRegistry('', DOCKER_PASS) {
-                            docker_image = docker.build "${IMAGE_NAME}"
-                        }
+    steps {
+        script {
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                docker.withRegistry('', DOCKER_PASS) {
+                    docker_image = docker.build "${IMAGE_NAME}"
+                }
 
-                        docker.withRegistry('', DOCKER_PASS) {
-                            docker_image.push("${IMAGE_TAG}")
-                            docker_image.push('latest')
-                        }
-                    }
+                docker.withRegistry('', DOCKER_PASS) {
+                    docker_image.push("${IMAGE_TAG}")
+                    docker_image.push('latest')
                 }
             }
         }
+    }
+}
     }
 }
