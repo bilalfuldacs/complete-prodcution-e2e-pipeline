@@ -5,7 +5,7 @@ pipeline {
     tools {
         jdk 'Java17' // These are the names in Jenkins for JDK and Maven
         maven 'Maven3'
-        docker 'Docker'
+       
     }
 
     environment {
