@@ -1,18 +1,20 @@
 pipeline {
     agent any
 
-    environment {
-        APP_NAME = "complete-prodcution-e2e-pipeline"
-        RELEASE = "1.0.0"
-        DOCKER_USER = '' // Initialize as empty
-        DOCKER_PASS = '' // Initialize as empty
-        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
-        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-    }
-
+    
     tools {
         jdk 'Java17' // These are the names in Jenkins for JDK and Maven
         maven 'Maven3'
+        docker 'Docker'
+    }
+    
+    environment {
+        APP_NAME = "complete-prodcution-e2e-pipeline"
+        RELEASE = "1.0.0"
+        DOCKER_USER = 'bilal4178'
+        DOCKER_PASS = 'dckr_pat_djv8yCJjHep88dwdJHuNJL25yiU' 
+        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
     }
 
     stages {
@@ -53,21 +55,20 @@ pipeline {
         }
         
         stage("Build & Push Docker Image") {
-        steps {
-            script {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    docker.withRegistry('', DOCKER_PASS) {
+            steps {
+                script {
+                    docker.withRegistry('',DOCKER_PASS) {
                         docker_image = docker.build "${IMAGE_NAME}"
                     }
 
-                    docker.withRegistry('', DOCKER_PASS) {
+                    docker.withRegistry('',DOCKER_PASS) {
                         docker_image.push("${IMAGE_TAG}")
                         docker_image.push('latest')
                     }
                 }
             }
+
         }
-    }
     
     }
 }
