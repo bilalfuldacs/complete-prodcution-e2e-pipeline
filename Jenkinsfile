@@ -55,7 +55,7 @@ pipeline {
         stage("Build & Push Docker Image") {
         steps {
             script {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'Ponkvscina@o11', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     docker.withRegistry('', DOCKER_PASS) {
                         docker_image = docker.build "${IMAGE_NAME}"
                     }
@@ -68,6 +68,6 @@ pipeline {
             }
         }
     }
-    
+
     }
 }
