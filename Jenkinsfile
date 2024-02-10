@@ -1,24 +1,24 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'Java17' //these are names in jenkins for jdk and maven
-        maven 'Maven3'
-    }
-     environment {
+    environment {
         APP_NAME = "complete-prodcution-e2e-pipeline"
         RELEASE = "1.0.0"
         DOCKER_USER = "bilal4178"
-        DOCKER_PASS = 'dckr_pat_kEutmz8Pk8R3SEwzJZMM45LN9-U'
-        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        DOCKER_PASS = 'ckr_pat_U5lMlI3lF5fU5tiphad9xg08akU'
+        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-        //JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
-
     }
+
+    tools {
+        jdk 'Java17' // These are the names in Jenkins for JDK and Maven
+        maven 'Maven3'
+    }
+
     stages {
         stage('Cleanup Workspace') {
             steps {
-                cleanWs()//this is used to clean up our workspace
+                cleanWs()
             }
         }
 
@@ -29,51 +29,38 @@ pipeline {
                     url: 'https://github.com/bilalfuldacs/complete-prodcution-e2e-pipeline'
             }
         }
-        stage('build') {
+
+        stage('Build') {
             steps {
-                sh 'mvn clean package'//this is used to clean up our workspace
+                sh 'mvn clean package'
             }
         }
-        stage('test') {
+
+        stage('Test') {
             steps {
-                sh 'mvn test'//this is used to clean up our workspace
+                sh 'mvn test'
             }
         }
         
-         stage('sonarqube analysis') {
-            steps {
-                script{
-                withSonarQubeEnv(credentialsId: 'sonar' ) {
-                    sh 'mvn sonar:sonar'//this is used to clean up our workspace
-                }
-                }
-        
-            }
-        }
-        // stage('squality gate') {
-        //     steps {
-        //         script{
-        //          waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
-        //         }
-        
-        //     }
-        // }
-    stage("Build & Push Docker Image") {
+        stage('SonarQube Analysis') {
             steps {
                 script {
-                    docker.withRegistry('',DOCKER_PASS) {
-                        docker_image = docker.build "${IMAGE_NAME}"
-                    }
-
-                    docker.withRegistry('',DOCKER_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push('latest')
+                    withSonarQubeEnv(credentialsId: 'sonar') {
+                        sh 'mvn sonar:sonar'
                     }
                 }
             }
-
         }
-        // Add more stages as needed
+        
+        stage("Build & Push Docker Image") {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_USER) {
+                        def docker_image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                        docker_image.push()
+                    }
+                }
+            }
+        }
     }
-
-   }
+}
